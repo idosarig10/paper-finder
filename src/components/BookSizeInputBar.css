@@ -1,6 +1,5 @@
 .BookSizeInputBar {
-    margin-top: 10px;
-    margin-inline: 1%;
+    margin: 1% 10px;
     width: auto;
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +19,7 @@
 #submit-book-size {
     width: 28%;
     max-width: 200px;
-}
+}       
 
 #submit-book-size>button {
     height: 100%;

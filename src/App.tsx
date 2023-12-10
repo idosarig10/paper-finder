@@ -14,7 +14,6 @@ const darkTheme = createTheme({
 
 function App() {
   const [paperSize, setPaperSize] = useState({ width: 650, height: 200 });
-  
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -26,6 +25,7 @@ function App() {
         <BookSizeInputBar paperSizeSetter={setPaperSize} />
         <PapersTable></PapersTable>
       </div>
+      
     </ThemeProvider>
   );
 }
