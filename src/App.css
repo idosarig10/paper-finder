@@ -1,4 +1,6 @@
 .App {
+  min-width: 360px;
+  min-height: 480px;
   background-color: #282c34;
   color: white;
   overflow: auto;

@@ -20,7 +20,7 @@ function App() {
       <CssBaseline />
       <div className='App'>
         <div className='Title'>
-          PaperFinder {window.innerWidth}
+          PaperFinder
         </div>
         <PaperLayout width={paperSize.width} height={paperSize.height} />
         <BookSizeInputBar paperSizeSetter={setPaperSize} />
