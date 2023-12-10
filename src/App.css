@@ -1,0 +1,17 @@
+.App {
+  background-color: #282c34;
+  color: white;
+  overflow:auto;
+  min-width: 360px;
+  min-height: 480px;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+}
+
+.Title {
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 50px;
+  color: #61dafb;
+}

@@ -1,0 +1,28 @@
+.BookSizeInputBar {
+    margin-top: 10px;
+    margin-inline: 2%;
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#book-width {
+    width: 32%;
+    max-width: 200px;
+}
+
+#book-height {
+    width: 33%;
+    max-width: 200px;
+    margin-inline: 10px;
+}
+
+#submit-book-size {
+    width: 28%;
+    max-width: 200px;
+}
+
+#submit-book-size>button {
+    height: 100%;
+    width: 100%;
+}
