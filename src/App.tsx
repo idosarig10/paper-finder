@@ -14,13 +14,13 @@ const darkTheme = createTheme({
 
 function App() {
   const [paperSize, setPaperSize] = useState({ width: 650, height: 200 });
-
+  
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className='App'>
         <div className='Title'>
-          PaperFinder
+          PaperFinder {window.innerWidth}
         </div>
         <PaperLayout width={paperSize.width} height={paperSize.height} />
         <BookSizeInputBar paperSizeSetter={setPaperSize} />
