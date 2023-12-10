@@ -14,14 +14,6 @@ interface Paper {
   utilization: number;
 }
 
-// const data = [
-//   {
-//     width: 1,
-//     height: 2,
-//     utilization: 30
-//   },
-// ];
-
 export const PapersTable = () => {
   const [data, setData] = useState<Paper[]>([]);
 
@@ -34,7 +26,8 @@ export const PapersTable = () => {
       complete: (results: ParseResult<Paper>) => {
         setData(results.data)
       },
-    })}, []);
+    })
+  }, []);
 
   const columns = useMemo<MRT_ColumnDef<Paper>[]>(
     () => [
@@ -49,6 +42,9 @@ export const PapersTable = () => {
       {
         accessorKey: 'utilization',
         header: 'Utilization',
+        Cell: ({ cell }) => (
+          <span>{cell.getValue<number>() === undefined ? undefined : cell.getValue<number>() + "%"}</span>
+        ),
       },
     ],
     [],
@@ -59,6 +55,14 @@ export const PapersTable = () => {
   const table = useMaterialReactTable({
     columns,
     data,
+    initialState: {
+      sorting: [
+        {
+          id: "utilization",
+          desc: true
+        }
+      ]
+    },
     getRowId: (row) => row.width.toString() + "x" + row.height.toString,
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () =>
