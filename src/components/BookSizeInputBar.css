@@ -1,27 +1,31 @@
 .BookSizeInputBar {
-    margin: 1% 10px;
-    width: auto;
-    display: flex;
-    flex-wrap: wrap;
+  margin: 1% 10px;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #book-width {
-    width: 32%;
-    max-width: 200px;
+  width: 32%;
+  max-width: 200px;
 }
 
 #book-height {
-    width: 33%;
-    max-width: 200px;
-    margin-inline: 10px;
+  width: 33%;
+  max-width: 200px;
+  margin-inline: 10px;
 }
 
 #submit-book-size {
-    width: 28%;
-    max-width: 200px;
-}       
+  width: 28%;
+  max-width: 200px;
+}
 
-#submit-book-size>button {
-    height: 100%;
-    width: 100%;
+#submit-book-size > button {
+  height: 100%;
+  width: 100%;
+}
+
+#radio-group {
+  margin-left: 10px;
 }
