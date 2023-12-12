@@ -1,16 +1,16 @@
 import { useState } from "react";
-import "./PaperLayout.css";
+import "./PaperSketch.css";
 
 
-export const PaperLayout = (onSelectedPaperSizeChangePointer: {onSelectedPaperSizeChange: (newSelectedPaperSize: { width: number; height: number; }) => void}) => {
+export const PaperSketch = (onSelectedPaperSizeChangePointer: {onSelectedPaperSizeChange: (newSelectedPaperSize: { width: number; height: number; }) => void}) => {
 
   const [selectedPaperSize, setSelectedPaperSize] = useState({ width: 650, height: 200 });
   onSelectedPaperSizeChangePointer.onSelectedPaperSizeChange = setSelectedPaperSize
 
   return (
-    <div id="paper-layout-container">
+    <div id="paper-sketch-container">
       <div
-        id="paper-layout"
+        id="paper-sketch"
         style={{
           aspectRatio:
             selectedPaperSize.width === undefined || selectedPaperSize.height === undefined

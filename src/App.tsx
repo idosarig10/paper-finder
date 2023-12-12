@@ -1,5 +1,5 @@
 import "./App.css";
-import { PaperLayout } from "./components/PaperLayout";
+import { PaperSketch } from "./components/PaperSketch";
 import { BookSizeInputBar } from "./components/BookSizeInputBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,13 +13,13 @@ const darkTheme = createTheme({
 
 function App() {
   const onSelectedPaperSizeChangePointer = {onSelectedPaperSizeChange: () => {}};
-  let paperLayout = PaperLayout(onSelectedPaperSizeChangePointer);
+  const paperSketch = PaperSketch(onSelectedPaperSizeChangePointer);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="App">
         <div className="Title">PaperFinder</div>
-        {paperLayout}
+        {paperSketch}
         <BookSizeInputBar />
         <PapersTable onSelectedPaperSizeChange={onSelectedPaperSizeChangePointer.onSelectedPaperSizeChange} />
       </div>

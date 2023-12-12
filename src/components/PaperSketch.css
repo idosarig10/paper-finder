@@ -1,4 +1,4 @@
-#paper-layout {
+#paper-sketch {
   background-color: white;
   outline-style: solid;
   outline-color: black;
@@ -14,7 +14,7 @@
   object-fit: contain;
 }
 
-#paper-layout-container {
+#paper-sketch-container {
   margin-inline: 1%;
   height: 30vw;
   width: auto;
