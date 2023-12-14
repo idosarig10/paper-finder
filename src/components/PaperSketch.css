@@ -12,10 +12,17 @@
   transform: translate(-50%, -50%);
   position: relative;
   object-fit: contain;
+  z-index: 1;
 }
 
 #paper-sketch-container {
+  position: relative;
   margin-inline: 1%;
   height: 30vw;
   width: auto;
+}
+
+#paper-sketch > div {
+  display: inline-block;
+  vertical-align: top;
 }

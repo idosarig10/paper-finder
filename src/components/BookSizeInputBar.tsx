@@ -1,17 +1,28 @@
-import { Button, FormControl, TextField, RadioGroup, FormControlLabel, Radio, FormLabel } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import "./BookSizeInputBar.css";
+import EventEmitter from "events";
+import { FormEvent, useState } from "react";
 
-let width: number;
-let height: number;
+interface BookSizeInputBarProps {
+  emitter: EventEmitter;
+}
 
-export const BookSizeInputBar = () => {
+export const BookSizeInputBar = ({ emitter }: BookSizeInputBarProps) => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    emitter.emit("bookSizeChanged", { width, height });
+  };
+
   return (
-    <div className="BookSizeInputBar">
+    <form onSubmit={handleSubmit} className="BookSizeInputBar">
       <div id="book-width">
         <TextField
           label="Book Width"
           type="number"
-          onChange={(e) => (width = parseFloat(e.target.value))}
+          onChange={(e) => setWidth(parseFloat(e.target.value))}
           InputProps={{ inputProps: { min: 0 } }}
         />
       </div>
@@ -19,36 +30,33 @@ export const BookSizeInputBar = () => {
         <TextField
           label="Book Height"
           type="number"
-          onChange={(e) => (height = parseFloat(e.target.value))}
+          onChange={(e) => setHeight(parseFloat(e.target.value))}
           InputProps={{ inputProps: { min: 0 } }}
         />
       </div>
       <div id="submit-book-size">
-        <Button
-          onClick={() => {
-            localStorage.setItem("bookSize", JSON.stringify({ width, height }));
-          }}
-          variant="contained"
-        >
+        <Button type="submit" variant="contained">
           Submit
         </Button>
       </div>
-      <div id="radio-group">
-        <FormControl>
-          <FormLabel>Fill Method</FormLabel>
-          <RadioGroup
-            row
-            defaultValue="no-Rotation"
-            onChange={(event) => {
-              localStorage.setItem("fillMethod", event.target.value);
-            }}
-          >
-            <FormControlLabel value="noRotation" control={<Radio />} label="No Rotation" />
-            <FormControlLabel value="noRotationSameRow" control={<Radio />} label="No Rotation in Same Row" />
-            <FormControlLabel value="rotationAllowed" control={<Radio />} label="Rotation Allowed" />
-          </RadioGroup>
-        </FormControl>
-      </div>
-    </div>
+    </form>
+
+    //    <div id="radio-group">
+    //     <FormControl>
+    //       <FormLabel>Fill Method</FormLabel>
+    //       <RadioGroup
+    //         row
+    //         defaultValue="no-Rotation"
+    //         onChange={(event) => {
+    //           localStorage.setItem("fillMethod", event.target.value);
+    //         }}
+    //       >
+    //         <FormControlLabel value="noRotation" control={<Radio />} label="No Rotation" />
+    //         <FormControlLabel value="noRotationSameRow" control={<Radio />} label="No Rotation in Same Row" />
+    //         <FormControlLabel value="rotationAllowed" control={<Radio />} label="Rotation Allowed" />
+    //       </RadioGroup>
+    //     </FormControl>
+    //   </div>
+    //  </div>
   );
 };

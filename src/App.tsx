@@ -1,9 +1,11 @@
 import "./App.css";
 import { PaperSketch } from "./components/PaperSketch";
-import { BookSizeInputBar } from "./components/BookSizeInputBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PapersTable } from "./components/PapersTable";
+import EventEmitter from "events";
+import { BookSizeInputBar } from "./components/BookSizeInputBar";
+// import { useRef } from "react";
 
 const darkTheme = createTheme({
   palette: {
@@ -12,16 +14,17 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const onSelectedPaperSizeChangePointer = {onSelectedPaperSizeChange: () => {}};
-  const paperSketch = PaperSketch(onSelectedPaperSizeChangePointer);
+
+  const emitter = new EventEmitter();
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="App">
         <div className="Title">PaperFinder</div>
-        {paperSketch}
-        <BookSizeInputBar />
-        <PapersTable onSelectedPaperSizeChange={onSelectedPaperSizeChangePointer.onSelectedPaperSizeChange} />
+        <PaperSketch emitter={emitter} />
+        <BookSizeInputBar emitter={emitter} />
+        <PapersTable  emitter={emitter}/>
       </div>
     </ThemeProvider>
   );
