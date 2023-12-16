@@ -1,10 +1,10 @@
 import "./App.css";
-import { PaperSketch } from "./components/PaperSketch";
+import { PaperSketch } from "./PaperSketch";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { PapersTable } from "./components/PapersTable";
+import { PapersTable } from "./PapersTable";
 import EventEmitter from "events";
-import { BookDimensionsInputBar } from "./components/BookDimensionsInputBar";
+import { BookDimensionsInputBar } from "./BookDimensionsInputBar";
 
 const darkTheme = createTheme({
   palette: {
