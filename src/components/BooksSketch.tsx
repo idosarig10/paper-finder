@@ -1,53 +1,55 @@
 import React, { useEffect, useState } from "react";
-import "./BooksSketch.css";
+import "./BooksSketch.scss";
 import EventEmitter from "events";
-import Size from "../interfaces/Size";
+import Dimensions from "../interfaces/Dimensions";
 import PaperRecord from "../interfaces/PaperRecord";
+import classNames from "classnames";
 
-type BooksSketchProps = {
+interface BooksSketchProps {
   emitter: EventEmitter;
-  selectedPaperRecord: PaperRecord;
-};
+  selectedPaperRecord: PaperRecord | undefined;
+}
 
-const BooksSketch: React.FunctionComponent<BooksSketchProps> = ({ emitter, selectedPaperRecord }) => {
-  const [bookSize, setBookSize] = useState<Size>();
+const BooksSketch = ({ emitter, selectedPaperRecord }: BooksSketchProps) => {
+  const [bookDimensions, setBookDimensions] = useState<Dimensions>();
 
   useEffect(() => {
-    // Function to run when the bookSizeChanged event is emitted
-    const handleBookSizeChange = (newBookSize: Size) => {
-      setBookSize(newBookSize);
+    const handleBookDimensionsChange = (newBookDimensions: Dimensions) => {
+      setBookDimensions(newBookDimensions);
     };
 
-    // Listen for the bookSizeChanged event
-    emitter.on("bookSizeChanged", handleBookSizeChange);
+    emitter.on("bookDimensionsChanged", handleBookDimensionsChange);
 
-    // Clean up the event listener when the component unmounts
     return () => {
-      emitter.off("bookSizeChanged", handleBookSizeChange);
+      emitter.off("bookDimensionsChanged", handleBookDimensionsChange);
     };
   }, [emitter]);
 
-  if (bookSize === undefined) {
-    return <div id="books-sketch" />;
-  } else if (bookSize.width > selectedPaperRecord.width || bookSize.height > selectedPaperRecord.height) {
-    // throw new Error("Book is too big for paper");
-    return <div id="books-sketch" />;
-  } else if (bookSize.width < 0 || bookSize.height < 0) {
-    // throw new Error("Book size must be positive");
-    return <div id="books-sketch" />;
-  } else {
-    return (
-      <div id="books-sketch">
-        <div
-          className="Book"
-          style={{
-            width: (bookSize.width / selectedPaperRecord.width) * 100 + "%",
-            height: (bookSize.height / selectedPaperRecord.height) * 100 + "%",
-          }}
-        ></div>
-      </div>
-    );
-  }
+  return (
+    <div id="books-sketch">
+      {selectedPaperRecord !== undefined &&
+        bookDimensions !== undefined &&
+        selectedPaperRecord.booksArrangementInPaper.map((isRotated, index) => (
+          <div
+            className={classNames("Book", { Rotate: isRotated })}
+            key={index}
+            style={
+              isRotated
+                ? {
+                    width: (bookDimensions.height / selectedPaperRecord.paperDimensions.width) * 100 + "%",
+                    height: (bookDimensions.width / selectedPaperRecord.paperDimensions.height) * 100 + "%",
+                  }
+                : {
+                    width: (bookDimensions.width / selectedPaperRecord.paperDimensions.width) * 100 + "%",
+                    height: (bookDimensions.height / selectedPaperRecord.paperDimensions.height) * 100 + "%",
+                  }
+            }
+          >
+            <div className={classNames("Arrow", { Rotate: isRotated })} />
+          </div>
+        ))}
+    </div>
+  );
 };
 
 export default BooksSketch;

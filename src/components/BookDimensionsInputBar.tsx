@@ -1,23 +1,25 @@
 import { Button, TextField } from "@mui/material";
-import "./BookSizeInputBar.css";
+import "./BookDimensionsInputBar.css";
 import EventEmitter from "events";
 import { FormEvent, useState } from "react";
 
-interface BookSizeInputBarProps {
+interface BookDimensionsInputBarProps {
   emitter: EventEmitter;
 }
 
-export const BookSizeInputBar = ({ emitter }: BookSizeInputBarProps) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+export const BookDimensionsInputBar = ({ emitter }: BookDimensionsInputBarProps) => {
+  const [width, setWidth] = useState<number>();
+  const [height, setHeight] = useState<number>();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    emitter.emit("bookSizeChanged", { width, height });
+    if (width && height) {
+      emitter.emit("bookDimensionsChanged", { width, height });      
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="BookSizeInputBar">
+    <form onSubmit={handleSubmit} className="BookDimensionsInputBar">
       <div id="book-width">
         <TextField
           label="Book Width"
@@ -34,7 +36,7 @@ export const BookSizeInputBar = ({ emitter }: BookSizeInputBarProps) => {
           InputProps={{ inputProps: { min: 0 } }}
         />
       </div>
-      <div id="submit-book-size">
+      <div id="submit-book-dimensions">
         <Button type="submit" variant="contained">
           Submit
         </Button>

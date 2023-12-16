@@ -3,32 +3,23 @@ import Papa, { ParseResult } from "papaparse";
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import calculate from "../utils/FixedAlignmentArranger";
 import { EventEmitter } from "stream";
-import Size from "../interfaces/Size";
-
-interface PaperSize {
-  width: number;
-  height: number;
-}
-
-interface PaperRecord {
-  width: number;
-  height: number;
-  paperArrangement: Array<boolean>;
-}
+import Dimensions from "../interfaces/Dimensions";
+import _ from "lodash";
+import PaperRecord from "../interfaces/PaperRecord";
 
 export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
-  const [paperSizes, setPaperSizes] = useState<PaperSize[]>([]);
-  const [bookSize, setBookSize] = useState<Size>({ width: 50, height: 50 });
+  const [papersDimensions, setPapersDimensions] = useState<Dimensions[]>([]);
+  const [bookDimensions, setBookDimensions] = useState<Dimensions>();
 
   useEffect(() => {
-    const handleBookSizeChange = (newBookSize: Size) => {
-      setBookSize(newBookSize);
+    const handleBookDimensionsChange = (newBookDimensions: Dimensions) => {
+      setBookDimensions(newBookDimensions);
     };
 
-    emitter.on("bookSizeChanged", handleBookSizeChange);
+    emitter.on("bookDimensionsChanged", handleBookDimensionsChange);
 
     return () => {
-      emitter.off("bookSizeChanged", handleBookSizeChange);
+      emitter.off("bookDimensionsChanged", handleBookDimensionsChange);
     };
   }, [emitter]);
 
@@ -40,58 +31,49 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
         download: true,
         skipEmptyLines: true,
         delimiter: ",",
-        complete: (results: ParseResult<PaperSize>) => {
-          setPaperSizes(results.data);
+        complete: (results: ParseResult<Dimensions>) => {
+          setPapersDimensions(results.data);
         },
       }
     );
   }, []);
 
-  const data = useMemo<PaperRecord[]>(() => {
-    return paperSizes.map<PaperRecord>((paperSize) => {
-      return {
-        ...paperSize,
-        paperArrangement: calculate(paperSize.width, paperSize.height, bookSize.width, bookSize.height),
-      };
-    });
-  }, [paperSizes, bookSize]);
-
-  const columns = useMemo<MRT_ColumnDef<PaperRecord>[]>(
+  const data = useMemo<Array<PaperRecord>>(
+    () =>
+      papersDimensions.map((paperDimensions) => ({
+        paperDimensions,
+        booksArrangementInPaper: bookDimensions
+          ? calculate(paperDimensions.width, paperDimensions.height, bookDimensions.width, bookDimensions.height)
+          : [],
+      })),
+    [papersDimensions, bookDimensions]
+  );
+  const columns = useMemo<MRT_ColumnDef<PaperRecord, number>[]>(
     () => [
       {
-        accessorKey: "width",
+        accessorKey: "paperDimensions.width",
         header: "Width",
       },
       {
-        accessorKey: "height",
+        accessorKey: "paperDimensions.height",
         header: "Height",
       },
       {
-        accessorKey: "paperArrangement",
+        accessorFn: (row) =>
+          row.booksArrangementInPaper.length / (row.paperDimensions.width * row.paperDimensions.height),
+        id: "bookDensity",
         header: "Utilization",
         Cell: ({ cell }) => (
           <span>
-            {((cell.row.original.paperArrangement.length * bookSize.width * bookSize.height) /
-              (cell.row.original.width * cell.row.original.height)) *
-              100 +
-              "%"}
+            {bookDimensions ? _.round(bookDimensions.width * bookDimensions.height * cell.getValue() * 100, 2) : 0}%
           </span>
         ),
-        sortingFn: (rowA, rowB) => {
-          const utilizationA =
-            (rowA.original.paperArrangement.length * bookSize.width * bookSize.height) /
-            (rowA.original.width * rowA.original.height);
-          const utilizationB =
-            (rowB.original.paperArrangement.length * bookSize.width * bookSize.height) /
-            (rowB.original.width * rowB.original.height);
-          return utilizationA - utilizationB;
-        },
       },
     ],
-    [bookSize]
+    [bookDimensions]
   );
 
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
   const table = useMaterialReactTable({
     columns,
@@ -103,29 +85,38 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
     initialState: {
       sorting: [
         {
-          id: "paperArrangement",
+          id: "bookDensity",
           desc: true,
         },
       ],
     },
-    getRowId: (row) => row.width.toString() + "x" + row.height.toString(),
+    getRowId: (row) => JSON.stringify(row.paperDimensions),
     enableRowSelection: true,
     enableMultiRowSelection: false,
-    onRowSelectionChange: setRowSelection,
+    positionToolbarAlertBanner: "none",
     state: {
       rowSelection,
     },
-    positionToolbarAlertBanner: "none",
+    onRowSelectionChange: (updater) => {
+      if (_.isFunction(updater)) {
+        setRowSelection(updater(rowSelection));
+      } else {
+        setRowSelection(updater);
+      }
+    },
   });
 
   useEffect(() => {
-    Object.entries(rowSelection).forEach(([key, isSelected]) => {
-      if (isSelected) {
-        const [width, height] = key.split("x").map(Number);
-        emitter.emit("selectedPaperRecordChanged", { width, height });
+    Object.entries(rowSelection).forEach(([key, value]) => {
+      if (value) {
+        const paperDimensions = JSON.parse(key);
+        const booksArrangementInPaper =
+          data.find((paperRecord) => _.isEqual(paperRecord.paperDimensions, paperDimensions))
+            ?.booksArrangementInPaper || [];
+        emitter.emit("selectedPaperRecordChanged", { paperDimensions, booksArrangementInPaper });
       }
     });
-  }, [rowSelection, emitter]);
+  }, [rowSelection, emitter, data]);
 
   return <MaterialReactTable table={table} />;
 };

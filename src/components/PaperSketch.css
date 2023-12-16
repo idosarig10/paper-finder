@@ -21,8 +21,3 @@
   height: 30vw;
   width: auto;
 }
-
-#paper-sketch > div {
-  display: inline-block;
-  vertical-align: top;
-}

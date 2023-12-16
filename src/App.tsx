@@ -4,8 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PapersTable } from "./components/PapersTable";
 import EventEmitter from "events";
-import { BookSizeInputBar } from "./components/BookSizeInputBar";
-// import { useRef } from "react";
+import { BookDimensionsInputBar } from "./components/BookDimensionsInputBar";
 
 const darkTheme = createTheme({
   palette: {
@@ -23,7 +22,7 @@ function App() {
       <div className="App">
         <div className="Title">PaperFinder</div>
         <PaperSketch emitter={emitter} />
-        <BookSizeInputBar emitter={emitter} />
+        <BookDimensionsInputBar emitter={emitter} />
         <PapersTable  emitter={emitter}/>
       </div>
     </ThemeProvider>

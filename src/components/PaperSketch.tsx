@@ -25,21 +25,18 @@ export const PaperSketch = ({ emitter }: PaperSketchProps) => {
 
   return (
     <div id="paper-sketch-container">
-      {selectedPaperRecord !== undefined ? (
-        <div
-          id="paper-sketch"
-          style={{
-            aspectRatio:
-              selectedPaperRecord.width === undefined || selectedPaperRecord.height === undefined
-                ? undefined
-                : selectedPaperRecord.width / selectedPaperRecord.height,
-          }}
-        >
-          <BooksSketch emitter={emitter} selectedPaperRecord={selectedPaperRecord} />
-        </div>
-      ) : (
-        <div id="paper-sketch" />
-      )}
+      <div
+        id="paper-sketch"
+        style={
+          selectedPaperRecord
+            ? {
+                aspectRatio: selectedPaperRecord.paperDimensions.width / selectedPaperRecord.paperDimensions.height,
+              }
+            : {}
+        }
+      >
+        <BooksSketch emitter={emitter} selectedPaperRecord={selectedPaperRecord} />
+      </div>
     </div>
   );
 };

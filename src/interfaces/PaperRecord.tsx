@@ -1,6 +1,6 @@
+import Dimensions from "./Dimensions";
 
 export default interface PaperRecord {
-    width: number;
-    height: number;
-    paperArrangement: Array<boolean>;
+  paperDimensions: Dimensions;
+  booksArrangementInPaper: Array<boolean>;
 }
