@@ -14,7 +14,7 @@ export const BookDimensionsInputBar = ({ emitter }: BookDimensionsInputBarProps)
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (width && height) {
-      emitter.emit("bookDimensionsChanged", { width, height });      
+      emitter.emit("bookDimensionsChanged", { width, height });
     }
   };
 
@@ -24,16 +24,26 @@ export const BookDimensionsInputBar = ({ emitter }: BookDimensionsInputBarProps)
         <TextField
           label="Book Width"
           type="number"
-          onChange={(e) => setWidth(parseFloat(e.target.value))}
-          InputProps={{ inputProps: { min: 0 } }}
+          InputProps={{
+            inputProps: {
+              min: 0,
+              step: "any",
+            },
+          }}
+          onChange={(e) => setWidth(Number(e.target.value))}
         />
       </div>
       <div id="book-height">
         <TextField
           label="Book Height"
           type="number"
-          onChange={(e) => setHeight(parseFloat(e.target.value))}
-          InputProps={{ inputProps: { min: 0 } }}
+          InputProps={{
+            inputProps: {
+              min: 0,
+              step: "any",
+            },
+          }}
+          onChange={(e) => setHeight(Number(e.target.value))}
         />
       </div>
       <div id="submit-book-dimensions">
