@@ -48,21 +48,25 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
       })),
     [papersDimensions, bookDimensions]
   );
+
   const columns = useMemo<MRT_ColumnDef<PaperRecord, number>[]>(
     () => [
       {
         accessorKey: "paperDimensions.width",
         header: "Width",
+        size: 80,
       },
       {
         accessorKey: "paperDimensions.height",
         header: "Height",
+        size: 80,
       },
       {
         accessorFn: (row) =>
           row.booksArrangementInPaper.length / (row.paperDimensions.width * row.paperDimensions.height),
         id: "bookDensity",
         header: "Utilization",
+        size: 80,
         Cell: ({ cell }) => (
           <span>
             {bookDimensions ? _.round(bookDimensions.width * bookDimensions.height * cell.getValue() * 100, 2) : 0}%
@@ -79,8 +83,8 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
     columns,
     data,
     defaultColumn: {
-      minSize: 20,
-      size: 100,
+      minSize: 10,
+      size: 50,
     },
     initialState: {
       sorting: [
