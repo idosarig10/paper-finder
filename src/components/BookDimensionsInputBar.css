@@ -1,24 +1,21 @@
 .BookDimensionsInputBar {
-  margin: 1.5% 10px;
-  width: auto;
-  display: flex;
-  flex-wrap: wrap;
+  margin: 1.5% 1%;
+  display: inline-flex;
+  width: 98%;
+  max-width: 600px;
 }
 
 #book-width {
-  width: 32%;
-  max-width: 200px;
+  width: 33%;
 }
 
 #book-height {
   width: 33%;
-  max-width: 200px;
-  margin-inline: 10px;
+  margin-inline: 1%;
 }
 
 #submit-book-dimensions {
-  width: 28%;
-  max-width: 200px;
+  width: 32%;
 }
 
 #submit-book-dimensions > button {
@@ -26,6 +23,3 @@
   width: 100%;
 }
 
-#radio-group {
-  margin-left: 10px;
-}

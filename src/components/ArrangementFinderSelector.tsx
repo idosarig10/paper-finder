@@ -1,6 +1,7 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import FixedAllignmentArrangementFinder from "../utils/FixedAlignmentArrangementFinder";
 import RowFixedAllignmentArrangementFinder from "../utils/RowFixedAlignmentArrangementFinder";
+import "./ArrangementFinderSelector.css";
 import { EventEmitter } from "events";
 
 const labelsArrangementFinders = {
