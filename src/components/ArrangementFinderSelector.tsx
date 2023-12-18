@@ -11,7 +11,7 @@ const labelsArrangementFinders = {
 
 export const ArrangementFinderSelector = ({ emitter }: { emitter: EventEmitter }) => {
   return (
-    <div id="radio-group">
+    <div id="arrangement-finder-selector">
       <FormControl>
         <FormLabel>Arrangement Finder</FormLabel>
         <RadioGroup row>
