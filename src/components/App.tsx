@@ -20,7 +20,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="App">
-        <div className="Title" />
+        <div className="Title" >PaperFinder</div>
         <PaperSketch emitter={emitter} />
         <BookDimensionsInputBar emitter={emitter} />
         <ArrangementFinderSelector emitter={emitter} />
