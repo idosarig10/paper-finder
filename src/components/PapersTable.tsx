@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import Papa, { ParseResult } from "papaparse";
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import calculate from "../utils/FixedAlignmentArranger";
 import { EventEmitter } from "stream";
 import Dimensions from "../interfaces/Dimensions";
 import _ from "lodash";
 import PaperRecord from "../interfaces/PaperRecord";
 
+interface ArrangementFinder {
+  (paperDimensions: Dimensions, bookDimensions: Dimensions): Array<Array<boolean>>;
+}
+
 export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
   const [papersDimensions, setPapersDimensions] = useState<Dimensions[]>([]);
   const [bookDimensions, setBookDimensions] = useState<Dimensions>();
+  const [arrangementFinder, setArrangementFinder] = useState<ArrangementFinder>();
 
   useEffect(() => {
     const handleBookDimensionsChange = (newBookDimensions: Dimensions) => {
@@ -24,8 +28,20 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
   }, [emitter]);
 
   useEffect(() => {
+    const handleArrangementFinderChange = (newArrangementFinder: ArrangementFinder) => {
+      setArrangementFinder(() => newArrangementFinder);
+    };
+
+    emitter.on("arrangementFinderChanged", handleArrangementFinderChange);
+
+    return () => {
+      emitter.off("arrangementFinderChanged", handleArrangementFinderChange);
+    };
+  }, [emitter]);
+
+  useEffect(() => {
     Papa.parse(
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRhZfaAtRwlyqlAvA9QKGtjSj25_VGj3_-MvvnXaspQDQypyUv6zqjeKf78eeC1E6MhLBaWktgTL2h1/pub?output=csv",
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRBE-ruc0C9QpLkIeUDgeeu4VMCqKg5JjCkLSmwGWNHPukZ9s5yVxoIiPTfjrT-ViljzZIm9s7X6fcC/pub?gid=1059440840&single=true&output=csv",
       {
         header: true,
         download: true,
@@ -38,16 +54,15 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
     );
   }, []);
 
-  const data = useMemo<Array<PaperRecord>>(
-    () =>
-      papersDimensions.map((paperDimensions) => ({
+  const data = useMemo<Array<PaperRecord>>(() => {
+    return papersDimensions.map((paperDimensions) => {
+      return {
         paperDimensions,
-        booksArrangementInPaper: bookDimensions
-          ? calculate(paperDimensions.width, paperDimensions.height, bookDimensions.width, bookDimensions.height)
-          : [],
-      })),
-    [papersDimensions, bookDimensions]
-  );
+        booksArrangementInPaper:
+          bookDimensions && arrangementFinder ? arrangementFinder(paperDimensions, bookDimensions) : [[]],
+      };
+    });
+  }, [papersDimensions, bookDimensions, arrangementFinder]);
 
   const columns = useMemo<MRT_ColumnDef<PaperRecord, number>[]>(
     () => [
@@ -63,7 +78,7 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
       },
       {
         accessorFn: (row) =>
-          row.booksArrangementInPaper.length / (row.paperDimensions.width * row.paperDimensions.height),
+          _.sumBy(row.booksArrangementInPaper, _.size) / (row.paperDimensions.width * row.paperDimensions.height),
         id: "bookDensity",
         header: "Utilization",
         size: 80,

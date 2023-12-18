@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { PapersTable } from "./PapersTable";
 import EventEmitter from "events";
 import { BookDimensionsInputBar } from "./BookDimensionsInputBar";
+import { ArrangementFinderSelector } from "./ArrangementFinderSelector";
 
 const darkTheme = createTheme({
   palette: {
@@ -13,7 +14,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-
   const emitter = new EventEmitter();
 
   return (
@@ -23,7 +23,8 @@ function App() {
         <div className="Title">PaperFinder</div>
         <PaperSketch emitter={emitter} />
         <BookDimensionsInputBar emitter={emitter} />
-        <PapersTable  emitter={emitter}/>
+        <ArrangementFinderSelector emitter={emitter} />
+        <PapersTable emitter={emitter} />
       </div>
     </ThemeProvider>
   );

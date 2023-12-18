@@ -4,6 +4,7 @@ import EventEmitter from "events";
 import Dimensions from "../interfaces/Dimensions";
 import PaperRecord from "../interfaces/PaperRecord";
 import classNames from "classnames";
+import _ from "lodash";
 
 interface BooksSketchProps {
   emitter: EventEmitter;
@@ -29,25 +30,40 @@ const BooksSketch = ({ emitter, selectedPaperRecord }: BooksSketchProps) => {
     <div id="books-sketch">
       {selectedPaperRecord !== undefined &&
         bookDimensions !== undefined &&
-        selectedPaperRecord.booksArrangementInPaper.map((isRotated, index) => (
-          <div
-            className={classNames("Book", { Rotate: isRotated })}
-            key={index}
-            style={
-              isRotated
-                ? {
-                    width: (bookDimensions.height / selectedPaperRecord.paperDimensions.width) * 100 + "%",
-                    height: (bookDimensions.width / selectedPaperRecord.paperDimensions.height) * 100 + "%",
+        selectedPaperRecord.booksArrangementInPaper.map((bookBlock, bookBlockIndex) => {
+          let bookBlockWidth = _.sumBy(bookBlock, (isRotated) =>
+            isRotated ? bookDimensions.height : bookDimensions.width
+          );
+          return (
+            <div
+              className="book-block"
+              key={bookBlockIndex}
+              style={{
+                width: (bookBlockWidth / selectedPaperRecord.paperDimensions.width) * 100 + "%",
+              }}
+            >
+              {bookBlock.map((isRotated, bookIndexInBlock) => (
+                <div
+                  className={classNames("Book", { Rotate: isRotated })}
+                  key={bookIndexInBlock}
+                  style={
+                    isRotated
+                      ? {
+                          width: (bookDimensions.height / selectedPaperRecord.paperDimensions.width) * 100 + "%",
+                          aspectRatio: bookDimensions.height / bookDimensions.width,
+                        }
+                      : {
+                          width: (bookDimensions.width / selectedPaperRecord.paperDimensions.width) * 100 + "%",
+                          aspectRatio: bookDimensions.width / bookDimensions.height,
+                        }
                   }
-                : {
-                    width: (bookDimensions.width / selectedPaperRecord.paperDimensions.width) * 100 + "%",
-                    height: (bookDimensions.height / selectedPaperRecord.paperDimensions.height) * 100 + "%",
-                  }
-            }
-          >
-            <div className={classNames("Arrow", { Rotate: isRotated })} />
-          </div>
-        ))}
+                >
+                  <div className={classNames("Arrow", { Rotate: isRotated })} />
+                </div>
+              ))}
+            </div>
+          );
+        })}
     </div>
   );
 };

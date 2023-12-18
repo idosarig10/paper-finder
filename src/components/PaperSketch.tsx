@@ -32,7 +32,7 @@ export const PaperSketch = ({ emitter }: PaperSketchProps) => {
             ? {
                 aspectRatio: selectedPaperRecord.paperDimensions.width / selectedPaperRecord.paperDimensions.height,
               }
-            : {}
+            : { width: "100%", height: "100%" }
         }
       >
         <BooksSketch emitter={emitter} selectedPaperRecord={selectedPaperRecord} />

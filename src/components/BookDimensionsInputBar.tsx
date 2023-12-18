@@ -52,23 +52,5 @@ export const BookDimensionsInputBar = ({ emitter }: BookDimensionsInputBarProps)
         </Button>
       </div>
     </form>
-
-    //    <div id="radio-group">
-    //     <FormControl>
-    //       <FormLabel>Fill Method</FormLabel>
-    //       <RadioGroup
-    //         row
-    //         defaultValue="no-Rotation"
-    //         onChange={(event) => {
-    //           localStorage.setItem("fillMethod", event.target.value);
-    //         }}
-    //       >
-    //         <FormControlLabel value="noRotation" control={<Radio />} label="No Rotation" />
-    //         <FormControlLabel value="noRotationSameRow" control={<Radio />} label="No Rotation in Same Row" />
-    //         <FormControlLabel value="rotationAllowed" control={<Radio />} label="Rotation Allowed" />
-    //       </RadioGroup>
-    //     </FormControl>
-    //   </div>
-    //  </div>
   );
 };
