@@ -1,15 +1,14 @@
 {
   "files": {
-    "main.css": "/paper-finder/static/css/main.7ae2bd99.css",
-    "main.js": "/paper-finder/static/js/main.b9b920a0.js",
-    "static/media/paperfinder-logo.svg": "/paper-finder/static/media/paperfinder-logo.e506836bacba8a68314b.svg",
+    "main.css": "/paper-finder/static/css/main.83cdc664.css",
+    "main.js": "/paper-finder/static/js/main.71901419.js",
     "index.html": "/paper-finder/index.html",
     "static/media/arrow.svg": "/paper-finder/static/media/arrow.7317400feedffb3bdf00.svg",
-    "main.7ae2bd99.css.map": "/paper-finder/static/css/main.7ae2bd99.css.map",
-    "main.b9b920a0.js.map": "/paper-finder/static/js/main.b9b920a0.js.map"
+    "main.83cdc664.css.map": "/paper-finder/static/css/main.83cdc664.css.map",
+    "main.71901419.js.map": "/paper-finder/static/js/main.71901419.js.map"
   },
   "entrypoints": [
-    "static/css/main.7ae2bd99.css",
-    "static/js/main.b9b920a0.js"
+    "static/css/main.83cdc664.css",
+    "static/js/main.71901419.js"
   ]
 }
