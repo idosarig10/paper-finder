@@ -20,7 +20,7 @@
   align-self: flex-start;
 }
 
-.Book {
+.book {
   border: 1px solid #ff0099;
   box-sizing: border-box;
   position: relative;
@@ -29,7 +29,7 @@
   align-content: center;
 }
 
-.Arrow {
+.arrow {
   position: relative;
   background-image: url("../assets/images/arrow.svg");
   background-size: contain;
@@ -39,7 +39,7 @@
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 1 / 1;
-  &.Rotate {
+  &.rotate {
     transform: rotate(90deg);
   }
 }

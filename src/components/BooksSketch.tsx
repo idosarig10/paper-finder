@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import "./BooksSketch.scss";
-import EventEmitter from "events";
 import PaperRecord from "../interfaces/PaperRecord";
 import classNames from "classnames";
 import _ from "lodash";
@@ -28,7 +26,7 @@ const BooksSketch = ({ selectedPaperRecord }: { selectedPaperRecord: PaperRecord
             >
               {bookBlock.map((isRotated, bookIndexInBlock) => (
                 <div
-                  className={classNames("Book", { Rotate: isRotated })}
+                  className={classNames("book", { rotate: isRotated })}
                   key={bookIndexInBlock}
                   style={
                     isRotated
@@ -42,7 +40,7 @@ const BooksSketch = ({ selectedPaperRecord }: { selectedPaperRecord: PaperRecord
                         }
                   }
                 >
-                  <div className={classNames("Arrow", { Rotate: isRotated })} />
+                  <div className={classNames("arrow", { rotate: isRotated })} />
                 </div>
               ))}
             </div>

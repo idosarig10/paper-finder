@@ -17,7 +17,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="App">
-        <div className="Title">PaperFinder</div>
+        <div id="title">PaperFinder</div>
         <PaperSketch />
         <BookDimensionsInputBar />
         <ArrangementFinderSelector />
