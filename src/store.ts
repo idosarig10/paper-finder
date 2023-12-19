@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import selectedPaperRecordReducer from "./reducers/selectedPaperRecordReducer";
 import bookDimensionsReducer from "./reducers/bookDimensionsReducer";
-import arrangementFinderReducer from "./reducers/arrangementFinderReducer";
+import arrangementFinderLabelReducer from "./reducers/arrangementFinderLabelReducer";
 
 const store = configureStore({
   reducer: {
     selectedPaperRecord: selectedPaperRecordReducer,
     bookDimensions: bookDimensionsReducer,
-    arrangementFinder: arrangementFinderReducer,
+    arrangementFinderLabel: arrangementFinderLabelReducer,
   },
 });
 

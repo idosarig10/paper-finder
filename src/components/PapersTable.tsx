@@ -7,11 +7,15 @@ import PaperRecord from "../interfaces/PaperRecord";
 import { setSelectedPaperRecord } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
+import { labelsArrangementFinders } from "./ArrangementFinderSelector";
+import ArrangmentFinder from "../interfaces/ArrangementFinder";
 
 export const PapersTable = () => {
   const dispatch = useDispatch();
   const [papersDimensions, setPapersDimensions] = useState<Dimensions[]>([]);
-  const arrangementFinder = useSelector((state: RootState) => state.arrangementFinder);
+  const arrangementFinder: ArrangmentFinder | null = useSelector((state: RootState) =>
+    state.arrangementFinderLabel ? labelsArrangementFinders[state.arrangementFinderLabel] : null
+  );
   const bookDimensions = useSelector((state: RootState) => state.bookDimensions, _.isEqual);
 
   useEffect(() => {

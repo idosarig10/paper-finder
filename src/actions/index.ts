@@ -1,5 +1,8 @@
-import { SET_SELECTED_PAPER_RECORD, SET_BOOK_DIMENSIONS, SET_ARRANGEMENT_FINDER } from "./types";
-import ArrangementFinder from "../interfaces/ArrangementFinder";
+import {
+  SET_SELECTED_PAPER_RECORD,
+  SET_BOOK_DIMENSIONS,
+  SET_ARRANGEMENT_FINDER_LABEL as SET_ARRANGEMENT_FINDER_LABEL,
+} from "./types";
 import Dimensions from "../interfaces/Dimensions";
 import PaperRecord from "../interfaces/PaperRecord";
 
@@ -11,6 +14,6 @@ export function setBookDimensions(newBookDimensions: Dimensions) {
   return { type: SET_BOOK_DIMENSIONS, payload: newBookDimensions };
 }
 
-export function setArrangementFinder(newArrangementFinder: ArrangementFinder) {
-  return { type: SET_ARRANGEMENT_FINDER, payload: newArrangementFinder };
+export function setArrangementFinder(newArrangementFinderLabel: string) {
+  return { type: SET_ARRANGEMENT_FINDER_LABEL, payload: newArrangementFinderLabel };
 }

@@ -4,8 +4,9 @@ import RowFixedAllignmentArrangementFinder from "../utils/RowFixedAlignmentArran
 import "./ArrangementFinderSelector.css";
 import { useDispatch } from "react-redux";
 import { setArrangementFinder } from "../actions";
+import ArrangmentFinder from "../interfaces/ArrangementFinder";
 
-const labelsArrangementFinders = {
+export const labelsArrangementFinders: { [key: string]: ArrangmentFinder } = {
   "Fixed Alignment": FixedAllignmentArrangementFinder,
   "Row Fixed Alignment ": RowFixedAllignmentArrangementFinder,
 };
@@ -18,13 +19,13 @@ export const ArrangementFinderSelector = () => {
       <FormControl>
         <FormLabel>Arrangement Finder</FormLabel>
         <RadioGroup row>
-          {Object.entries(labelsArrangementFinders).map(([label, arrangementFinder], index) => (
+          {Object.keys(labelsArrangementFinders).map((label, index) => (
             <FormControlLabel
               control={<Radio />}
               key={index}
               label={label}
               value={index}
-              onChange={() => dispatch(setArrangementFinder(arrangementFinder))}
+              onChange={() => dispatch(setArrangementFinder(label))}
             />
           ))}
         </RadioGroup>
