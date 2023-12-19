@@ -1,8 +1,4 @@
-import {
-  SET_SELECTED_PAPER_RECORD,
-  SET_BOOK_DIMENSIONS,
-  SET_ARRANGEMENT_FINDER_LABEL as SET_ARRANGEMENT_FINDER_LABEL,
-} from "./types";
+import { SET_SELECTED_PAPER_RECORD, SET_BOOK_DIMENSIONS, SET_ARRANGEMENT_FINDER_LABEL } from "./types";
 import Dimensions from "../interfaces/Dimensions";
 import PaperRecord from "../interfaces/PaperRecord";
 
