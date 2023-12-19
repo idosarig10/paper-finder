@@ -1,35 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./BooksSketch.scss";
 import EventEmitter from "events";
-import Dimensions from "../interfaces/Dimensions";
 import PaperRecord from "../interfaces/PaperRecord";
 import classNames from "classnames";
 import _ from "lodash";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
-interface BooksSketchProps {
-  emitter: EventEmitter;
-  selectedPaperRecord: PaperRecord | undefined;
-}
-
-const BooksSketch = ({ emitter, selectedPaperRecord }: BooksSketchProps) => {
-  const [bookDimensions, setBookDimensions] = useState<Dimensions>();
-
-  useEffect(() => {
-    const handleBookDimensionsChange = (newBookDimensions: Dimensions) => {
-      setBookDimensions(newBookDimensions);
-    };
-
-    emitter.on("bookDimensionsChanged", handleBookDimensionsChange);
-
-    return () => {
-      emitter.off("bookDimensionsChanged", handleBookDimensionsChange);
-    };
-  }, [emitter]);
+const BooksSketch = ({ selectedPaperRecord }: { selectedPaperRecord: PaperRecord | null }) => {
+  const bookDimensions = useSelector((state: RootState) => state.bookDimensions, _.isEqual);
 
   return (
     <div id="books-sketch">
-      {selectedPaperRecord !== undefined &&
-        bookDimensions !== undefined &&
+      {selectedPaperRecord &&
+        bookDimensions &&
         selectedPaperRecord.booksArrangementInPaper.map((bookBlock, bookBlockIndex) => {
           let bookBlockWidth = _.sumBy(bookBlock, (isRotated) =>
             isRotated ? bookDimensions.height : bookDimensions.width

@@ -1,27 +1,11 @@
-import { useEffect, useState } from "react";
 import "./PaperSketch.css";
 import BooksSketch from "./BooksSketch";
-import PaperRecord from "../interfaces/PaperRecord";
-import EventEmitter from "events";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import _ from "lodash";
 
-interface PaperSketchProps {
-  emitter: EventEmitter;
-}
-
-export const PaperSketch = ({ emitter }: PaperSketchProps) => {
-  const [selectedPaperRecord, setSelectedPaperRecord] = useState<PaperRecord>();
-
-  useEffect(() => {
-    const handleSelectedPaperRecordChange = (newSelectedPaperRecord: PaperRecord) => {
-      setSelectedPaperRecord(newSelectedPaperRecord);
-    };
-
-    emitter.on("selectedPaperRecordChanged", handleSelectedPaperRecordChange);
-
-    return () => {
-      emitter.off("selectedPaperRecordChanged", handleSelectedPaperRecordChange);
-    };
-  }, [emitter]);
+export const PaperSketch = () => {
+  const selectedPaperRecord = useSelector((state: RootState) => state.selectedPaperRecord, _.isEqual);
 
   return (
     <div id="paper-sketch-container">
@@ -35,7 +19,7 @@ export const PaperSketch = ({ emitter }: PaperSketchProps) => {
             : { width: "100%", height: "100%" }
         }
       >
-        <BooksSketch emitter={emitter} selectedPaperRecord={selectedPaperRecord} />
+        <BooksSketch selectedPaperRecord={selectedPaperRecord} />
       </div>
     </div>
   );

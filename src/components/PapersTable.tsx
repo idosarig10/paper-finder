@@ -1,43 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import Papa, { ParseResult } from "papaparse";
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import { EventEmitter } from "stream";
 import Dimensions from "../interfaces/Dimensions";
 import _ from "lodash";
 import PaperRecord from "../interfaces/PaperRecord";
+import { setSelectedPaperRecord } from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
 
-interface ArrangementFinder {
-  (paperDimensions: Dimensions, bookDimensions: Dimensions): Array<Array<boolean>>;
-}
-
-export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
+export const PapersTable = () => {
+  const dispatch = useDispatch();
   const [papersDimensions, setPapersDimensions] = useState<Dimensions[]>([]);
-  const [bookDimensions, setBookDimensions] = useState<Dimensions>();
-  const [arrangementFinder, setArrangementFinder] = useState<ArrangementFinder>();
-
-  useEffect(() => {
-    const handleBookDimensionsChange = (newBookDimensions: Dimensions) => {
-      setBookDimensions(newBookDimensions);
-    };
-
-    emitter.on("bookDimensionsChanged", handleBookDimensionsChange);
-
-    return () => {
-      emitter.off("bookDimensionsChanged", handleBookDimensionsChange);
-    };
-  }, [emitter]);
-
-  useEffect(() => {
-    const handleArrangementFinderChange = (newArrangementFinder: ArrangementFinder) => {
-      setArrangementFinder(() => newArrangementFinder);
-    };
-
-    emitter.on("arrangementFinderChanged", handleArrangementFinderChange);
-
-    return () => {
-      emitter.off("arrangementFinderChanged", handleArrangementFinderChange);
-    };
-  }, [emitter]);
+  const arrangementFinder = useSelector((state: RootState) => state.arrangementFinder);
+  const bookDimensions = useSelector((state: RootState) => state.bookDimensions, _.isEqual);
 
   useEffect(() => {
     Papa.parse(
@@ -132,10 +107,10 @@ export const PapersTable = ({ emitter }: { emitter: EventEmitter }) => {
         const booksArrangementInPaper =
           data.find((paperRecord) => _.isEqual(paperRecord.paperDimensions, paperDimensions))
             ?.booksArrangementInPaper || [];
-        emitter.emit("selectedPaperRecordChanged", { paperDimensions, booksArrangementInPaper });
+        dispatch(setSelectedPaperRecord({ paperDimensions, booksArrangementInPaper }));
       }
     });
-  }, [rowSelection, emitter, data]);
+  }, [rowSelection, data, dispatch]);
 
   return <MaterialReactTable table={table} />;
 };

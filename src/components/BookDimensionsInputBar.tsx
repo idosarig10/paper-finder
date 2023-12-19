@@ -1,20 +1,18 @@
 import { Button, TextField } from "@mui/material";
 import "./BookDimensionsInputBar.css";
-import EventEmitter from "events";
 import { FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setBookDimensions } from "../actions";
 
-interface BookDimensionsInputBarProps {
-  emitter: EventEmitter;
-}
-
-export const BookDimensionsInputBar = ({ emitter }: BookDimensionsInputBarProps) => {
+export const BookDimensionsInputBar = () => {
   const [width, setWidth] = useState<number>();
   const [height, setHeight] = useState<number>();
+  const dispatch = useDispatch();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (width && height) {
-      emitter.emit("bookDimensionsChanged", { width, height });
+      dispatch(setBookDimensions({ width, height }));
     }
   };
 

@@ -2,14 +2,17 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mu
 import FixedAllignmentArrangementFinder from "../utils/FixedAlignmentArrangementFinder";
 import RowFixedAllignmentArrangementFinder from "../utils/RowFixedAlignmentArrangementFinder";
 import "./ArrangementFinderSelector.css";
-import { EventEmitter } from "events";
+import { useDispatch } from "react-redux";
+import { setArrangementFinder } from "../actions";
 
 const labelsArrangementFinders = {
   "Fixed Alignment": FixedAllignmentArrangementFinder,
   "Row Fixed Alignment ": RowFixedAllignmentArrangementFinder,
 };
 
-export const ArrangementFinderSelector = ({ emitter }: { emitter: EventEmitter }) => {
+export const ArrangementFinderSelector = () => {
+  const dispatch = useDispatch();
+
   return (
     <div id="arrangement-finder-selector">
       <FormControl>
@@ -21,7 +24,7 @@ export const ArrangementFinderSelector = ({ emitter }: { emitter: EventEmitter }
               key={index}
               label={label}
               value={index}
-              onChange={() => emitter.emit("arrangementFinderChanged", arrangementFinder)}
+              onChange={() => dispatch(setArrangementFinder(arrangementFinder))}
             />
           ))}
         </RadioGroup>
