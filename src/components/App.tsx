@@ -5,9 +5,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {BookDimensionsInputBar} from "./BookDimensionsInputBar";
 import {ArrangementFinderSelector} from "./ArrangementFinderSelector";
-
-const PapersTable = React.lazy(() => import("./PapersTable").then(module => ({default: module.PapersTable})));
-
+import {PapersTable} from "./PapersTable";
 
 const darkTheme = createTheme({
   palette: {
