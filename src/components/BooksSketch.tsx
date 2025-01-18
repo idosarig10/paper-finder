@@ -1,19 +1,19 @@
 import "./BooksSketch.scss";
 import PaperRecord from "../interfaces/PaperRecord";
 import classNames from "classnames";
-import _ from "lodash";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import {useSelector} from "react-redux";
+import {RootState} from "../store";
+import {isEqual, sumBy} from "lodash-es";
 
 const BooksSketch = ({ selectedPaperRecord }: { selectedPaperRecord: PaperRecord | null }) => {
-  const bookDimensions = useSelector((state: RootState) => state.bookDimensions, _.isEqual);
+  const bookDimensions = useSelector((state: RootState) => state.bookDimensions, isEqual);
 
   return (
     <div id="books-sketch">
       {selectedPaperRecord &&
         bookDimensions &&
         selectedPaperRecord.booksArrangementInPaper.map((bookBlock, bookBlockIndex) => {
-          let bookBlockWidth = _.sumBy(bookBlock, (isRotated) =>
+          let bookBlockWidth = sumBy(bookBlock, (isRotated) =>
             isRotated ? bookDimensions.height : bookDimensions.width
           );
           return (
