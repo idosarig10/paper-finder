@@ -21,11 +21,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.idea/jsLibraryMappings.xml
-/.idea/shelf/Remove_package_files_and_restructure_HTML_file_location.xml
-/.idea/shelf/Remove_package_files_and_restructure_HTML_file_location/shelved.patch
-/.idea/shelf/Update_React_app_structure,_dependencies,_and_toolchain_settings/shelved.patch
-/.idea/shelf/Update_React_app_structure__dependencies__and_toolchain_settings.xml
-/.idea/vcs.xml
-/.idea/workspace.xml
+/.idea/*
 /dist/

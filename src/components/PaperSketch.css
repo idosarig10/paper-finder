@@ -1,8 +1,6 @@
 #paper-sketch {
   background-color: white;
-  outline-style: solid;
-  outline-color: black;
-  outline-width: 3px;
+  outline: black solid 3px;
   max-width: 100%;
   max-height: 100%;
   width: auto;

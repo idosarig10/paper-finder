@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import Papa, { ParseResult } from "papaparse";
-import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
+import {useEffect, useMemo, useState} from "react";
+import Papa, {ParseResult} from "papaparse";
+import {MaterialReactTable, type MRT_ColumnDef, useMaterialReactTable} from "material-react-table";
 import Dimensions from "../interfaces/Dimensions";
 import _ from "lodash";
 import PaperRecord from "../interfaces/PaperRecord";
-import { setSelectedPaperRecord } from "../actions";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { labelsArrangementFinders } from "./ArrangementFinderSelector";
-import ArrangmentFinder from "../interfaces/ArrangementFinder";
+import {setSelectedPaperRecord} from "../actions";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../store";
+import {labelsArrangementFinders} from "./ArrangementFinderSelector";
+import ArrangementFinder from "../interfaces/ArrangementFinder";
 
 export const PapersTable = () => {
   const dispatch = useDispatch();
   const [papersDimensions, setPapersDimensions] = useState<Dimensions[]>([]);
-  const arrangementFinder: ArrangmentFinder | null = useSelector((state: RootState) =>
+  const arrangementFinder: ArrangementFinder | null = useSelector((state: RootState) =>
     state.arrangementFinderLabel ? labelsArrangementFinders[state.arrangementFinderLabel] : null
   );
   const bookDimensions = useSelector((state: RootState) => state.bookDimensions, _.isEqual);
