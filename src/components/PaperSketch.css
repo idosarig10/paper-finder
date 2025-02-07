@@ -1,21 +1,21 @@
 #paper-sketch {
-  background-color: white;
-  outline: black solid 3px;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: relative;
-  object-fit: contain;
-  z-index: 1;
+    background-color: white;
+    outline: black solid 3px;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+    object-fit: contain;
+    z-index: 1;
 }
 
 #paper-sketch-container {
-  position: relative;
-  margin-inline: 1%;
-  height: 30vw;
-  width: auto;
+    position: relative;
+    margin-inline: 1%;
+    height: 30vw;
+    width: auto;
 }

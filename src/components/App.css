@@ -1,17 +1,17 @@
 .App {
-  min-width: 360px;
-  min-height: 480px;
-  background-color: #282c34;
-  color: white;
-  overflow: auto;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
+    min-width: 360px;
+    min-height: 480px;
+    background-color: #282c34;
+    color: white;
+    overflow: auto;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
 }
 
 #title {
-  text-align: center;
-  margin-bottom: 5px;
-  font-size: 50px;
-  color: #61dafb;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 50px;
+    color: #61dafb;
 }
