@@ -8,24 +8,24 @@ import {ArrangementFinderSelector} from "./ArrangementFinderSelector";
 import {PapersTable} from "./PapersTable";
 
 const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
+    palette: {
+        mode: "dark",
+    },
 });
 
 function App() {
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <div className="App">
-        <div id="title">PaperFinder</div>
-        <PaperSketch />
-        <BookDimensionsInputBar />
-        <ArrangementFinderSelector />
-        <PapersTable />
-      </div>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline/>
+            <div className="App">
+                <div id="title">PaperFinder</div>
+                <PaperSketch/>
+                <BookDimensionsInputBar/>
+                <ArrangementFinderSelector/>
+                <PapersTable/>
+            </div>
+        </ThemeProvider>
+    );
 }
 
 export default App;

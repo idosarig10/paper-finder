@@ -1,27 +1,29 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M6J7SNCEP"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+        window.dataLayer = window.dataLayer || [];
 
-      gtag("config", 'G-2M6J7SNCEP');
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag("js", new Date());
+
+        gtag("config", 'G-2M6J7SNCEP');
     </script>
-    <meta name="viewport" content="width=device-width" />
-    <meta charset="utf-8" />
-    <meta name="theme-color" content="#000000" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta content="width=device-width" name="viewport"/>
+    <meta charset="utf-8"/>
+    <meta content="#000000" name="theme-color"/>
+    <link href="/favicon.svg" rel="icon" sizes="any" type="image/svg+xml"/>
+    <link href="/manifest.json" rel="manifest"/>
     <title>Paper Finder</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<script src="/src/index.tsx" type="module"></script>
+</body>
 </html>
