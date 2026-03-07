@@ -11,6 +11,7 @@
     position: relative;
     object-fit: contain;
     z-index: 1;
+    overflow: hidden;
 }
 
 #paper-sketch-container {

@@ -6,6 +6,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {BookDimensionsInputBar} from "./BookDimensionsInputBar";
 import {ArrangementFinderSelector} from "./ArrangementFinderSelector";
 import {PapersTable} from "./PapersTable";
+import {PrintSettingsInputBar} from "./PrintSettingsInputBar";
+import {PricePerSheetInput} from "./PricePerSheetInput";
+import {ShareButton} from "./ShareButton";
+import {ExportButton} from "./ExportButton";
+import {useUrlStateHydration} from "../hooks/useUrlStateHydration";
 
 const darkTheme = createTheme({
     palette: {
@@ -14,6 +19,8 @@ const darkTheme = createTheme({
 });
 
 function App() {
+    useUrlStateHydration();
+
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline/>
@@ -21,7 +28,13 @@ function App() {
                 <div id="title">PaperFinder</div>
                 <PaperSketch/>
                 <BookDimensionsInputBar/>
+                <PrintSettingsInputBar/>
+                <PricePerSheetInput/>
                 <ArrangementFinderSelector/>
+                <div className="toolbar">
+                    <ShareButton/>
+                    <ExportButton/>
+                </div>
                 <PapersTable/>
             </div>
         </ThemeProvider>
