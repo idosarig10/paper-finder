@@ -1,6 +1,7 @@
 import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@mui/material";
 import FixedAllignmentArrangementFinder from "../utils/FixedAlignmentArrangementFinder";
 import RowFixedAllignmentArrangementFinder from "../utils/RowFixedAlignmentArrangementFinder";
+import GuillotineCutArrangementFinder from "../utils/GuillotineCutArrangementFinder";
 import "./ArrangementFinderSelector.css";
 import {useDispatch} from "react-redux";
 import {setArrangementFinder} from "../actions";
@@ -9,6 +10,7 @@ import ArrangmentFinder from "../interfaces/ArrangementFinder";
 export const labelsArrangementFinders: { [key: string]: ArrangmentFinder } = {
     "Fixed Alignment": FixedAllignmentArrangementFinder,
     "Row Fixed Alignment ": RowFixedAllignmentArrangementFinder,
+    "Guillotine Cut": GuillotineCutArrangementFinder,
 };
 
 export const ArrangementFinderSelector = () => {

@@ -9,6 +9,8 @@ import {RootState} from "../store";
 import {labelsArrangementFinders} from "./ArrangementFinderSelector";
 import ArrangementFinder from "../interfaces/ArrangementFinder";
 import {isEqual, isFunction, round, size, sumBy} from "lodash-es"
+import {matchPaperName} from "../data/standardPaperSizes";
+import createMarginAwareArrangementFinder from "../utils/createMarginAwareArrangementFinder";
 
 export const PapersTable = () => {
     const dispatch = useDispatch();
@@ -17,6 +19,8 @@ export const PapersTable = () => {
         state.arrangementFinderLabel ? labelsArrangementFinders[state.arrangementFinderLabel] : null
     );
     const bookDimensions = useSelector((state: RootState) => state.bookDimensions, isEqual);
+    const printSettings = useSelector((state: RootState) => state.printSettings, isEqual);
+    const pricePerSheet = useSelector((state: RootState) => state.pricePerSheet);
 
     useEffect(() => {
         Papa.parse(
@@ -34,17 +38,26 @@ export const PapersTable = () => {
     }, []);
 
     const data = useMemo<Array<PaperRecord>>(() => {
+        const finder = arrangementFinder
+            ? createMarginAwareArrangementFinder(arrangementFinder, printSettings)
+            : null;
         return papersDimensions.map((paperDimensions) => {
             return {
                 paperDimensions,
                 booksArrangementInPaper:
-                    bookDimensions && arrangementFinder ? arrangementFinder(paperDimensions, bookDimensions) : [[]],
+                    bookDimensions && finder ? finder(paperDimensions, bookDimensions) : [[]],
             };
         });
-    }, [papersDimensions, bookDimensions, arrangementFinder]);
+    }, [papersDimensions, bookDimensions, arrangementFinder, printSettings]);
 
-    const columns = useMemo<MRT_ColumnDef<PaperRecord, number>[]>(
+    const columns = useMemo<MRT_ColumnDef<PaperRecord, any>[]>(
         () => [
+            {
+                id: "paperName",
+                header: "Name",
+                size: 100,
+                accessorFn: (row) => matchPaperName(row.paperDimensions) ?? "\u2014",
+            },
             {
                 accessorKey: "paperDimensions.width",
                 header: "Width",
@@ -56,6 +69,12 @@ export const PapersTable = () => {
                 size: 80,
             },
             {
+                id: "booksPerSheet",
+                header: "Books",
+                size: 70,
+                accessorFn: (row) => sumBy(row.booksArrangementInPaper, size),
+            },
+            {
                 accessorFn: (row) =>
                     sumBy(row.booksArrangementInPaper, size) / (row.paperDimensions.width * row.paperDimensions.height),
                 id: "bookDensity",
@@ -63,12 +82,38 @@ export const PapersTable = () => {
                 size: 80,
                 Cell: ({cell}) => (
                     <span>
-            {bookDimensions ? round(bookDimensions.width * bookDimensions.height * cell.getValue() * 100, 2) : 0}%
-          </span>
+                        {bookDimensions ? round(bookDimensions.width * bookDimensions.height * cell.getValue<number>() * 100, 2) : 0}%
+                    </span>
                 ),
             },
+            {
+                id: "wasteArea",
+                header: "Waste (cm\u00B2)",
+                size: 100,
+                accessorFn: (row) => {
+                    const paperArea = row.paperDimensions.width * row.paperDimensions.height;
+                    const booksCount = sumBy(row.booksArrangementInPaper, size);
+                    const bookArea = bookDimensions ? bookDimensions.width * bookDimensions.height : 0;
+                    return round(paperArea - booksCount * bookArea, 2);
+                },
+            },
+            ...(pricePerSheet != null
+                ? [{
+                    id: "costPerBook",
+                    header: "Cost/Book",
+                    size: 90,
+                    accessorFn: (row: PaperRecord) => {
+                        const booksCount = sumBy(row.booksArrangementInPaper, size);
+                        return booksCount > 0 ? round(pricePerSheet / booksCount, 3) : null;
+                    },
+                    Cell: ({cell}: { cell: any }) => {
+                        const val = cell.getValue();
+                        return <span>{val != null ? Number(val).toFixed(3) : "\u2014"}</span>;
+                    },
+                } as MRT_ColumnDef<PaperRecord, any>]
+                : []),
         ],
-        [bookDimensions]
+        [bookDimensions, pricePerSheet]
     );
 
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
