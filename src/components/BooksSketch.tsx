@@ -1,6 +1,7 @@
 import "./BooksSketch.scss";
 import PaperRecord from "../interfaces/PaperRecord";
 import Dimensions from "../interfaces/Dimensions";
+import Dimensions from "../interfaces/Dimensions";
 import classNames from "classnames";
 import {useSelector} from "react-redux";
 import {RootState} from "../store";
@@ -168,6 +169,16 @@ const BooksSketch = ({selectedPaperRecord}: {selectedPaperRecord: PaperRecord | 
         );
     }, [selectedPaperRecord, bookDimensions]);
 
+    const displayBlocks = useMemo(() => {
+        if (!selectedPaperRecord || !bookDimensions) return [];
+        const totalBooks = sumBy(selectedPaperRecord.booksArrangementInPaper, size);
+        return computeDisplayBlocks(
+            selectedPaperRecord.paperDimensions,
+            bookDimensions,
+            totalBooks
+        );
+    }, [selectedPaperRecord, bookDimensions]);
+
     return (
         <div id="books-sketch">
             {selectedPaperRecord &&
@@ -182,25 +193,40 @@ const BooksSketch = ({selectedPaperRecord}: {selectedPaperRecord: PaperRecord | 
                     );
                     if (booksPerRow === 0) return null;
 
+                displayBlocks.map((block, blockIndex) => {
+                    if (block.books.length === 0 || block.widthCm <= 0) return null;
+                    const isBlockRotated = block.books[0];
+                    const effectiveBookWidth = isBlockRotated ? bookDimensions.height : bookDimensions.width;
+                    const booksPerRow = Math.min(
+                        Math.floor(block.widthCm / effectiveBookWidth),
+                        block.books.length
+                    );
+                    if (booksPerRow === 0) return null;
+
                     return (
                         <div
                             className="book-block"
+                            key={blockIndex}
                             key={blockIndex}
                             style={{
                                 width: (block.widthCm / selectedPaperRecord.paperDimensions.width) * 100 + "%",
                             }}
                         >
                             {block.books.map((isRotated, bookIndex) => (
+                            {block.books.map((isRotated, bookIndex) => (
                                 <div
                                     className={classNames("book", {rotate: isRotated})}
+                                    key={bookIndex}
                                     key={bookIndex}
                                     style={
                                         isRotated
                                             ? {
                                                 width: (bookDimensions.height / block.widthCm) * 100 + "%",
+                                                width: (bookDimensions.height / block.widthCm) * 100 + "%",
                                                 aspectRatio: bookDimensions.height / bookDimensions.width,
                                             }
                                             : {
+                                                width: (bookDimensions.width / block.widthCm) * 100 + "%",
                                                 width: (bookDimensions.width / block.widthCm) * 100 + "%",
                                                 aspectRatio: bookDimensions.width / bookDimensions.height,
                                             }
