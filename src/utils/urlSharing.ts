@@ -6,7 +6,6 @@ export interface ShareableState {
     printSettings: PrintSettings;
     pricePerSheet: number | null;
     arrangementFinderLabel: string | null;
-    selectedPaperDimensions: Dimensions | null;
 }
 
 export function encodeStateToUrl(state: ShareableState): string {
@@ -23,48 +22,51 @@ export function encodeStateToUrl(state: ShareableState): string {
     if (state.printSettings.trimSpacing !== 0) params.set("ts", String(state.printSettings.trimSpacing));
     if (state.pricePerSheet != null) params.set("pps", String(state.pricePerSheet));
     if (state.arrangementFinderLabel) params.set("af", state.arrangementFinderLabel);
-    if (state.selectedPaperDimensions) {
-        params.set("pw", String(state.selectedPaperDimensions.width));
-        params.set("ph", String(state.selectedPaperDimensions.height));
-    }
 
     const base = window.location.origin + window.location.pathname;
-    return `${base}?${params.toString()}`;
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
 }
 
 export function decodeStateFromUrl(): Partial<ShareableState> | null {
     const params = new URLSearchParams(window.location.search);
     if (params.size === 0) return null;
 
+    const parseNumber = (value: string | null): number | null => {
+        if (value === null) return null;
+        const parsed = parseFloat(value);
+        return Number.isFinite(parsed) ? parsed : null;
+    };
+
     const result: Partial<ShareableState> = {};
 
-    const bw = params.get("bw");
-    const bh = params.get("bh");
-    if (bw && bh) {
-        result.bookDimensions = {width: Number(bw), height: Number(bh)};
+    const bw = parseNumber(params.get("bw"));
+    const bh = parseNumber(params.get("bh"));
+    if (bw !== null && bh !== null) {
+        result.bookDimensions = {width: bw, height: bh};
     }
+
+    const mt = parseNumber(params.get("mt"));
+    const mb = parseNumber(params.get("mb"));
+    const ml = parseNumber(params.get("ml"));
+    const mr = parseNumber(params.get("mr"));
+    const ts = parseNumber(params.get("ts"));
 
     result.printSettings = {
         margins: {
-            top: Number(params.get("mt") ?? 0),
-            bottom: Number(params.get("mb") ?? 0),
-            left: Number(params.get("ml") ?? 0),
-            right: Number(params.get("mr") ?? 0),
+            top: mt ?? 0,
+            bottom: mb ?? 0,
+            left: ml ?? 0,
+            right: mr ?? 0,
         },
-        trimSpacing: Number(params.get("ts") ?? 0),
+        trimSpacing: ts ?? 0,
     };
 
-    const pps = params.get("pps");
-    if (pps) result.pricePerSheet = Number(pps);
+    const pps = parseNumber(params.get("pps"));
+    if (pps !== null) result.pricePerSheet = pps;
 
     const af = params.get("af");
     if (af) result.arrangementFinderLabel = af;
-
-    const pw = params.get("pw");
-    const ph = params.get("ph");
-    if (pw && ph) {
-        result.selectedPaperDimensions = {width: Number(pw), height: Number(ph)};
-    }
 
     return result;
 }

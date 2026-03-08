@@ -117,8 +117,15 @@ function regionsToBlocks(regions: FilledRegion[]): Array<Array<boolean>> {
     return blocks.length > 0 ? blocks : [[]];
 }
 
+const solverCache = new Map<string, ReturnType<typeof createGuillotineSolver>>();
+
 const findArrangement = (paperDimensions: Dimensions, bookDimensions: Dimensions): Array<Array<boolean>> => {
-    const solver = createGuillotineSolver(bookDimensions.width, bookDimensions.height);
+    const key = cacheKey(bookDimensions.width, bookDimensions.height);
+    let solver = solverCache.get(key);
+    if (!solver) {
+        solver = createGuillotineSolver(bookDimensions.width, bookDimensions.height);
+        solverCache.set(key, solver);
+    }
     const result = solver(paperDimensions.width, paperDimensions.height);
     return regionsToBlocks(result.regions);
 };

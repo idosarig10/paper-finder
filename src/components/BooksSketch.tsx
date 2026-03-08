@@ -176,11 +176,7 @@ const BooksSketch = ({selectedPaperRecord}: {selectedPaperRecord: PaperRecord | 
                     if (block.books.length === 0 || block.widthCm <= 0) return null;
                     const isBlockRotated = block.books[0];
                     const effectiveBookWidth = isBlockRotated ? bookDimensions.height : bookDimensions.width;
-                    const booksPerRow = Math.min(
-                        Math.floor(block.widthCm / effectiveBookWidth),
-                        block.books.length
-                    );
-                    if (booksPerRow === 0) return null;
+                    if (block.widthCm < effectiveBookWidth) return null;
 
                     return (
                         <div
